@@ -1,12 +1,23 @@
-const express = require('express')
+import dotenv from 'dotenv'
+dotenv.config()
+import express from 'express'
 const app = express();
-const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost:27017/votingsystem?readPreference=primary&appname=MongoDB%20Compass&ssl=false',{useNewUrlParser: true})
-const voterModel = require('./models/voters');
+import mongoose from 'mongoose'
+import connectDB from './config/connectdb.js'
+import cors from 'cors'
+import votersModel from './models/voters.js';
+
+
+const port = process.env.PORT
+const DATABASE_URL = process.env.DATABASE_URL
+
+app.use(cors());
+connectDB(DATABASE_URL)
+app.use(express.json())
 
 // app.get('/insert', async (req,res)=>{
-//     const friend = new voterModel({name: 'don', age: 20})
-//     await friend.save();
+//     const voter = new voterModel({name: 'don', username: "farhan12", password:"1234",cnic: "1730138535899", address: "hajicamp", constituency:"jj"})
+//     await voter.save();
 //     res.send('data inserted')
 // })
 // app.get('/read', (req,res)=>{
@@ -25,6 +36,6 @@ const voterModel = require('./models/voters');
 // })
 
 
-app.listen('3001',()=>{
-    console.log('you are connected');
-})
+app.listen(port, () => {
+    console.log(`Server listening at http://localhost:${port}`)
+  })
