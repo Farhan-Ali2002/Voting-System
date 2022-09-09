@@ -1,8 +1,10 @@
 import React from 'react'
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import {Link} from "react-router-dom"
+import axios from 'axios'
+import {Link, useNavigate} from "react-router-dom"
 function Login() {
+   const navigate = useNavigate();
     const initialValues = {
         username: "",
         password: ""
@@ -11,8 +13,17 @@ function Login() {
         username: Yup.string().min(3).max(15).matches(/^[A-Za-z][A-Za-z0-9_]{7,29}$/,"invalid username!").required(),
         password: Yup.string().min(4).required()
       });
-      const onSubmit = () => {
-        console.log("yay!")
+      const onSubmit = (data,{resetForm}) => {
+        axios.post("http://localhost:3001/login",data).then((response)=>{
+          if(response.data.error){
+            alert(response.data.error)
+          }
+          else{
+                navigate("/signup")
+          }
+
+        })
+        
 
       }
   return (
