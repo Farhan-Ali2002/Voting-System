@@ -3,8 +3,14 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from 'axios'
 import {Link, useNavigate} from "react-router-dom"
+import useAuth from '../hooks/useAuth';
+import {useLocation } from 'react-router-dom';
 function Login() {
    const navigate = useNavigate();
+   const location = useLocation();
+   const { auth } = useAuth();
+   const from = location.state?.from?.pathname || "/";
+   const { setAuth } = useAuth();
     const initialValues = {
         username: "",
         password: ""
@@ -19,7 +25,23 @@ function Login() {
             alert(response.data.error)
           }
           else{
-                navigate("/signup")
+                console.log(response.data.roles);
+                const roles = response?.data?.roles;
+                const username = response?.data?.username;
+                const password = response?.data?.password;
+                 setAuth({ username, password, roles});
+                 console.log(auth.roles)
+                  
+                 console.log(roles[0].name)
+                 if (roles[0].name === 'voter') 
+                  navigate('/voter', { replace: true });
+                 else if (roles[0].name === 'sadmin') 
+                  navigate('/admin', { replace: true });
+                 else if (roles[0].name === 'officer') 
+                  navigate('/officer', { replace: true });
+                  
+                 
+                 
           }
 
         })
