@@ -1,6 +1,18 @@
-import React from "react";
-
+import {React,useState} from "react";
+import MyModal from "./Modal";
+import axios from "axios";
 export default function Table(data) {
+    const [showModal,setshowModal] = useState(false)
+    const [cnic,setcnic] = useState("");
+    const handleonclose = ()=>{
+        setshowModal(false)
+    }
+    const getvoterdata = async (cnic) =>{
+        setcnic(cnic)
+        console.log("cnic:", cnic)
+        setshowModal(true)
+     }
+    
     return (
         <div className="flex flex-col">
             <div className="overflow-x-auto">
@@ -57,35 +69,35 @@ export default function Table(data) {
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-300 whitespace-nowrap">
                                         
-                                        {user.username}
+                                        {user.cnic}
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-300 whitespace-nowrap">
-                                        {user.fname}
+                                        {user.username}
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-300 whitespace-nowrap">
                                         {user.lname}
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                        <a
-                                            className="text-green-500 hover:text-green-700"
-                                            href="#"
-                                        >
-                                            Edit
-                                        </a>
+                                    <button className ="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded " type="submit"
+                                    onClick={()=>getvoterdata(user.cnic)}>
+                                        Edit
+                                    </button>
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                        <a
-                                            className="text-red-500 hover:text-red-700"
-                                            href="#"
-                                        >
-                                            Delete
-                                        </a>
+                                    <button className ="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" type="submit">
+                                        Delete
+                                    </button>
                                     </td>
                                 </tr>
 )})}
                             </tbody>
 
                         </table>
+                        {(showModal)?(
+                        <MyModal onClose = {handleonclose} visible = {showModal} cnic = {cnic}></MyModal>):(
+                            <></>
+                        )
+}
                     </div>
                 </div>
             </div>
