@@ -22,7 +22,8 @@ app.get('/insertrole', async (req,res)=>{
     res.send('role inserted')
 })
 app.get('/insert', async (req,res)=>{
-    const user = new UsersModel({fname: 'don',lname: 'don', username: "hassan123",roles : ["631b414a949883f725382093"], password:"1234",cnic: "1730128535898", address: "hajicamp", constituency:"jj"})
+    const user = new UsersModel({fname: 'ali',lname: 'tahir', username: "ali1234",roles : ["631b4162f4518c3987ff51d6"],
+     password:"1234",cnic: "1730138535897", address: "hajicamp", constituency:"jj"})
     await user.save();
     res.send('data inserted')
 })
@@ -57,6 +58,21 @@ app.get('/readvoter', (req,res)=>{
         }
     }
     ).select('fname lname username cnic -_id name roles');
+
+    
+})
+app.get('/getvoter/:cnic', (req,res)=>{
+    const cnic = req.params.cnic
+    UsersModel.find({cnic: cnic},(err,result)=>{
+        if (err) {
+            res.send(err);
+            
+        }
+        else{
+            res.send(result);
+        }
+    }
+    ).select('fname lname username cnic constituency -_id name');
 
     
 })
