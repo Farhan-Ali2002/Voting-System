@@ -1,2 +1,2 @@
 # Voting-System
-A Voting System using ReactJS, django, tailwind CSS, MongoDB
+A Voting System using ReactJS, Nodejs, tailwind CSS, MongoDB
